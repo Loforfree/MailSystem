@@ -1,5 +1,7 @@
 # MailSystem
 
+![MailSystem 运行界面](docs/images/mail-system-home.png)
+
 ## 1. 填写邮箱信息
 
 复制项目根目录的 `.env.example`，将副本改名为 `.env`，然后在 `.env` 中填写邮箱账号和授权码：
