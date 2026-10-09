@@ -1,0 +1,32 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+<h2 class="text-center">撰写邮件</h2>
+<form method="post" action="{% url 'compose_email' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- 邮箱地址 -->
+    <div class="mb-3">
+        <label for="recipient" class="form-label">邮箱地址</label>
+        <input type="text" class="form-control" id="recipient" name="recipient" placeholder="name@example.com 【若多个邮件用英文逗号分隔】" >
+    </div>
+    <!-- 主题 -->
+    <div class="mb-3">
+        <label for="subject" class="form-label">主题</label>
+        <textarea class="form-control" id="subject" name="subject" rows="1"></textarea>
+    </div>
+    <!-- 内容 -->
+    <div class="mb-3">
+        <label for="body" class="form-label">内容</label>
+        <textarea class="form-control" id="body" name="body" rows="10"></textarea>
+    </div>
+    <!-- 附件 -->
+    <div class="mb-3">
+        <label for="formFile" class="form-label">附件</label>
+        <input class="form-control" type="file" id="formFile" name="attachment">
+    </div>
+    <!-- 提交按钮 -->
+     <div style="text-align: center;">
+        <button type="submit;" class="btn btn-outline-dark" >发送</button>
+    </div>
+</form>
+{% endblock %}

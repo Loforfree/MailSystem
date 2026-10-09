@@ -1,0 +1,51 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+
+<style>
+    .th-pink{
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+</style>
+
+
+<h2 class="text-center">联系人列表</h2>
+<ul class="list-group list-group-flush">
+    {% for contact in contacts %}
+    <li class="list-group-item th-pink"><strong>{{ contact.name }} - {{ contact.email }}</strong></li>
+    {% endfor %}
+</ul>
+<p></p>
+<h2 class="text-center">添加联系人</h2>
+
+<!--
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }} 自动渲染input输入框
+    <button type="submit" class="btn btn-primary">确定</button>
+</form>
+-->
+<form method="post">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">@</span>
+        <input type="text" class="form-control " placeholder="用户名" aria-label="Username"
+            aria-describedby="basic-addon1" name="name">
+    </div>
+    {%if form.name.errors%}
+        <div class="text-danger">{{ form.name.errors }}</div>
+    {% endif %}
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="邮箱" aria-label="Recipient's username"
+            aria-describedby="basic-addon2" name='email'>
+        <span class="input-group-text" id="basic-addon2" >username@example.com</span>
+    </div>
+    {% if form.email.errors %}
+        <div class="text-danger">请输入合法邮箱</div>
+    {%endif%}
+    <div class="text-center">
+        <button type="submit" class="btn btn-outline-dark">添加</butto>
+    </div>
+</form>
+
+{% endblock %}

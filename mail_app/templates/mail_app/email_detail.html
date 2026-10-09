@@ -1,0 +1,48 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+
+<div class="email-detail card" style="background-color:rgba(0,0,0,0.05)!important;">
+    <div class="card-header text-center"style="background-color:rgba(0,0,0,0.05)!important;">
+        <h2>{{ email.subject }}</h2>
+    </div>
+    <div class="card-body" style="background-color:rgba(0,0,0,0.05)!important;">
+        <div class="email-meta mb-4" style="background-color:rgba(0,0,0,0.05)!important;">
+            <p><strong>发件人:</strong> {{ email.sender }}</p>
+            <p><strong>收件人:</strong> {{ email.recipient }}</p>
+            <p><strong>时间:</strong> {{ email.timestamp|date:"Y-m-d H:i:s" }}</p>
+        </div>
+
+        <div class="email-body mb-4" style="background-color:rgba(0,0,0,0.05)!important;">
+            {{ email.body|linebreaks }}
+        </div>
+
+        {% if email.attachment_url %}
+        <div class="attachments mb-4" >
+            <h5>附件:</h5>
+            <ul class="list-group" >
+                {% with email.get_attachments as attachments %}
+                {% for filename in attachments %}
+                <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:rgba(255, 118, 118, 0.05)!important;">
+                    {{ filename }}
+                    <a href="{% url 'download_attachment' email.pk filename|urlencode %}"
+                        class="btn btn-outline-dark">
+                        下载
+                    </a>
+                </li>
+                {% endfor %}
+                {% endwith %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="email-actions mt-4 text-center" >
+            <a href="{% url 'flag_email' pk=email.pk %}" class="btn btn-outline-dark">
+                {% if email.is_flagged %}取消标记{% else %}标记{% endif %}
+            </a>
+            <a href="{% url 'delete_email' pk=email.pk %}" class="btn btn-outline-dark">删除</a>
+            <a href="{% url 'email_list' %}" class="btn btn-outline-dark">返回</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

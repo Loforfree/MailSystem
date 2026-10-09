@@ -1,0 +1,93 @@
+<!-- mail_app/trash_list.html -->
+{% extends 'mail_app/base.html' %}
+
+{% block content %}
+<style>
+    /* 定义表头单元格的通用样式 */
+    .th-pink-bg {
+        background-color: rgba(255, 174, 174, 0.5) !important;
+        text-align: center !important;
+    }
+    
+    /* 新增的链接样式 */
+    a {
+        color: black !important; /* 黑色文字 */
+        text-decoration: none !important; /* 去掉下划线 */
+    }
+    
+    a:hover {
+        text-decoration: underline !important; /* 鼠标悬停时显示下划线（可选） */
+    }
+</style>
+
+<div class="container">
+    <h2 class="mb-4" style="text-align: center;">回收站</h2>
+
+    <!-- 操作按钮（批量恢复/永久删除） -->
+    <form method="post" action="{% url 'handle_trash_actions' %}">
+        {% csrf_token %}
+
+        <!-- 邮件列表（表格形式） -->
+        {% if deleted_emails %}
+        <div class="table-responsive">  
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 40px;" class="th-pink-bg"><input type="checkbox" id="select-all"></th>
+                        <th style="width: 25%;" class="th-pink-bg">发件人</th>
+                        <th style="width: 50%;" class="th-pink-bg">主题</th>
+                        <th style="width: 25%;" class="text-end th-pink-bg">时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in deleted_emails %}
+                    <tr style="background-color: transparent !important;">
+                        <td style="background-color: transparent !important; text-align: center;">
+                            <input class="form-check-input email-checkbox" type="checkbox" name="email_ids"
+                                value="{{ email.id }}" id="email_{{ email.id }}">
+                        </td>
+                        <td style="background-color: transparent !important; text-align: center;">
+                            <label class="form-check-label" for="email_{{ email.id }}">
+                                <strong>{{ email.sender }}</strong>
+                            </label>
+                        </td>
+                        <td style="background-color: transparent !important; text-align: center;">
+                            <label class="form-check-label" for="email_{{ email.id }}">
+                                {{ email.subject|default:"(无主题)"|truncatechars:60 }}
+                            </label>
+                        </td>
+                        <td class="text-end" style="background-color: transparent !important; text-align: center !important;">
+                            <small class="text-muted">{{ email.timestamp|date:"Y-m-d H:i" }}</small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-danger mt-1 text-center fs-5" style="background-color:rgba(243, 172, 172, 0.5)!important;">
+            <i class="bi bi-info-circle"></i> 回收站为空
+        </div>
+        {% endif %}
+
+        <div class="mb-3" style="text-align: center;">
+            <button type="submit" name="action" value="restore" class="btn btn-outline-dark">
+                <i class="bi bi-arrow-counterclockwise"></i> 恢复
+            </button>
+            <button type="submit" name="action" value="true_delete" class="btn btn-outline-dark">
+                <i class="bi bi-trash-fill"></i> 永久删除
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- 全选功能脚本 -->
+<script>
+    document.getElementById('select-all').addEventListener('change', function (e) {
+        const checkboxes = document.querySelectorAll('.email-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = e.target.checked;
+        });
+    });
+</script>
+{% endblock %}

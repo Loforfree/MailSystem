@@ -1,0 +1,79 @@
+{%extends 'mail_app/base.html'%}
+{%block content%}
+
+<style>
+    h2 {
+        color: #333;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .info-container {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-item {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        display: inline-block;
+        width: 80px;
+    }
+
+    .value {
+        display: inline-block;
+    }
+</style>
+
+<h2>个人信息</h2>
+{%if data%}
+<div class="info-container fs-4"
+    style="background-color: rgba(255, 228, 228, 0.5); max-width: 800px; margin: 0 auto; padding: 20px;">
+    <div class="info-item" style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <label style="min-width: 120px;">姓名：</label>
+        <span class="value">{{data.name}}</span>
+    </div>
+
+    <div class="info-item" style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <label style="min-width: 120px;">邮箱：</label>
+        <span class="value">{{data.email}}</span>
+    </div>
+
+    <div class="info-item" style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <label style="min-width: 120px;">城市：</label>
+        <span class="value">{{data.address}}</span>
+    </div>
+
+    <div class="info-item" style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <label style="min-width: 120px;">手机号：</label>
+        <span class="value">{{data.phone}}</span>
+    </div>
+
+    <div class="info-item" style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <label style="min-width: 120px;">年龄：</label>
+        <span class="value">{{data.age}}</span>
+    </div>
+
+    <div class="info-item" style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <label style="min-width: 120px;">性别：</label>
+        <span class="value">{{data.gender}}</span>
+    </div>
+
+    <!-- 添加修改按钮 -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'personal_input' %}" class="btn btn-outline-dark">
+            修改
+        </a>
+    </div>
+</div>
+{%else%}
+<p style="text-align: center;">尚未填写个人信息，请<a href="{%url 'personal_input'%}">填写</a></p>
+{%endif%}
+
+{%endblock%}

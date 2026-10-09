@@ -1,0 +1,61 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+
+<style>
+    .th-par {
+        text-align: center !important;
+        background-color: transparent !important;
+    }
+
+    /* 新增的链接样式 */
+    a {
+        color: black !important;
+        /* 黑色文字 */
+        text-decoration: none !important;
+        /* 去掉下划线 */
+    }
+
+    a:hover {
+        text-decoration: underline !important;
+        /* 鼠标悬停时显示下划线（可选） */
+    }
+</style>
+
+<h2 style="text-align: center;">星标邮件</h2>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        {% if flagged_emails %}
+        <thead>
+            <tr style="text-align: center;">
+                <th style="width: 40%;" class="th-par">邮件标题</th>
+                <th style="width: 35%;" class="th-par">收件人</th>
+                <th style="width: 25%;" class="th-par">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in flagged_emails %}
+            <tr>
+                <td class="th-par"><a
+                        href="{% url 'email_detail' pk=email.pk %}"><strong>{{ email.subject }}</strong></a></td>
+                <td class="th-par"><strong>(发送给: {{ email.recipient }})</strong></td>
+                <td class="th-par">
+                    <span style="text-align: center;">
+                        <a href="{% url 'unflag_email' pk=email.pk %}">取消星标</a>
+                        <a href="{% url 'delete_email' pk=email.pk %}">删除</a>
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="th-par">暂无邮件</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% else %}
+        <tr>
+            <td colspan="3" class="th-par">暂无星标邮件</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

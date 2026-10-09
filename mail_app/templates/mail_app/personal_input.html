@@ -1,0 +1,123 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+
+<!-- 引入Bootstrap CSS -->
+
+<div class="container mt-4">
+    <form class="row g-3 needs-validation" method="POST" action="{% url 'personal_input' %}" novalidate>
+        {% csrf_token %}
+
+        <!-- 姓名 -->
+        <div class="col-md-4">
+            <label for="validationCustom01" class="form-label">姓名</label>
+            <input type="text" class="form-control" id="validationCustom01" name="name"
+                value="{% if info %}{{ info.name }}{% endif %}" required>
+            <div class="valid-feedback">
+                看起来不错!
+            </div>
+        </div> 
+
+        <!-- 邮箱 -->
+        <div class="col-md-4">
+            <label for="validationCustomEmail" class="form-label">邮件地址</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                <input type="email" class="form-control" id="validationCustomEmail" name="email"
+                    value="{% if info %}{{ info.email }}{% endif %}" aria-describedby="inputGroupPrepend" required>
+                <div class="invalid-feedback">
+                    请输入合法邮箱地址
+                </div>
+            </div>
+        </div>
+        
+        <!-- 手机号 -->
+        <div class="col-md-4">
+            <label for="validationCustomPhone" class="form-label">手机号</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="phoneGroupPrepend">+86</span>
+                <input type="tel" class="form-control" id="validationCustomPhone" name="phone"
+                    value="{% if info %}{{ info.phone }}{% endif %}" pattern="[0-9]{11}"
+                    aria-describedby="phoneGroupPrepend" required>
+                <div class="invalid-feedback">
+                    请输入11位手机号
+                </div>
+            </div>
+        </div>
+
+        <!-- 城市 -->
+        <div class="col-md-6">
+            <label for="validationCustomCity" class="form-label">城市</label>
+            <input type="text" class="form-control" id="validationCustomCity" name="address"
+                value="{% if info %}{{ info.address }}{% endif %}" required>
+            <div class="invalid-feedback">
+                请输入城市
+            </div>
+        </div>
+
+        <!-- 性别 -->
+        <div class="col-md-3">
+            <label for="validationCustomGender" class="form-label">性别</label>
+            <select class="form-select" id="validationCustomGender" name="gender" required>
+                <option selected disabled value="">选择</option>
+                <option value="男" {% if info and info.gender == '男' %}selected{% endif %}>男</option>
+                <option value="女" {% if info and info.gender == '女' %}selected{% endif %}>女</option>
+            </select>
+            <div class="invalid-feedback">
+                请选择性别
+            </div>
+        </div>
+
+        <!-- 年龄 -->
+        <div class="col-md-3">
+            <label for="validationCustomAge" class="form-label">年龄</label>
+            <input type="number" class="form-control" id="validationCustomAge" name="age"
+                value="{% if info %}{{ info.age }}{% endif %}" min="1" max="120" required>
+            <div class="invalid-feedback">
+                请输入合法年龄(1-120)
+            </div>
+        </div>
+
+        <!-- 条款同意 -->
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="agree" id="invalidCheck" name="agree" required>
+                <label class="form-check-label" for="invalidCheck">
+                    同意条款和条件
+                </label>
+                <div class="invalid-feedback">
+                    请先勾选同意条款和条件
+                </div>
+            </div>
+        </div>
+
+        <!-- 提交按钮 -->
+        <div class="col-12 text-center">
+            <button class="btn btn-primary" type="submit">提交</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 表单验证脚本
+    (function () {
+        'use strict'
+
+        // 获取所有需要验证的表单
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // 循环并阻止提交
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+{% endblock %}

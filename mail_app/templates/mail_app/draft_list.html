@@ -1,0 +1,31 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+<h2 class="text-center">草稿箱</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>收件人</th>
+            <th>主题</th>
+            <th>保存时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for draft in drafts %}
+        <tr>
+            <td>{{ draft.recipient|truncatechars:20 }}</td>
+            <td>{{ draft.subject|truncatechars:30 }}</td>
+            <td>{{ draft.timestamp|date:"Y-m-d H:i" }}</td>
+            <td>
+                <a href="{% url 'compose_email' %}?draft_id={{ draft.id }}" class="btn btn-sm btn-primary">编辑</a>
+                <a href="{% url 'delete_draft' draft.id %}" class="btn btn-sm btn-danger">删除</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">暂无草稿</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

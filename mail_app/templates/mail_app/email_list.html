@@ -1,0 +1,94 @@
+{% extends 'mail_app/base.html' %}
+{% block content %}
+
+<style>
+    .th-par {
+        text-align: left;
+        background-color: transparent !important;
+    }
+
+    .th-head {
+        text-align: center;
+        background-color: rgba(255, 234, 234, 0.3) !important;
+    }
+
+    /* 新增的链接样式 */
+    a {
+        color: black !important;
+        /* 黑色文字 */
+        text-decoration: none !important;
+        /* 去掉下划线 */
+    }
+
+    a:hover {
+        text-decoration: underline !important;
+        /* 鼠标悬停时显示下划线（可选） */
+    }
+</style>
+
+<h2>收件箱</h2>
+<!-- 添加刷新按钮 -->
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th style="width: 50%; " class="th-head">主题</th>
+                <th style="width: 25%; " class="th-head">发件人</th>
+                <th style="width: 25%;" class="th-head">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in inbox_emails %}
+            <tr>
+                <td class="th-par" style="width: 50%;"><a
+                        href="{% url 'email_detail' pk=email.pk %}"><strong>{{ email.subject }}</strong></a></td>
+                <td class="th-par" style="width: 25%;"><strong>(来自: {{ email.sender }})</strong></td>
+                <td class="th-par" style="width: 25%; text-align: center;">
+                    <span>
+                        <a href="{% url 'flag_email' pk=email.pk %}">标记</a>
+                        <a href="{% url 'delete_email' pk=email.pk %}">删除</a>
+                    </span>
+                </td>
+                {% empty %}
+                <li>暂无邮件</li>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+<h2>已发送邮件</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th style="width: 50%; " class="th-head">主题</th>
+                <th style="width: 25%; " class="th-head">发件人</th>
+                <th style="width: 25%;" class="th-head">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in sent_emails %}
+            <tr>
+                <td class="th-par" style="width: 50%;">
+                    <a href="{% url 'email_detail' pk=email.pk %}"><strong>{{ email.subject }}</strong></a>
+                </td>
+                <td class="th-par" style="width: 25%;"><strong>(发送给: {{ email.recipient }})</strong></td>
+                <td class="th-par" style="width: 25%; text-align: center;">
+                    <span>
+                        <a href="{% url 'flag_email' pk=email.pk %}">标记</a>
+                        <a href="{% url 'delete_email' pk=email.pk %}">删除</a>
+                    </span>
+                </td>
+                {% empty %}
+                <li>暂无邮件</li>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

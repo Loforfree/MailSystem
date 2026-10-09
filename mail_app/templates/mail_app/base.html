@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>邮件管理系统</title>
+
+    <!-- 本地Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <style>
+        .rounded-custom {
+            border-radius: 10px !important;
+            /* 调整圆角半径弧度 */
+        }
+    </style>
+
+
+
+</head>
+
+<body background="{% static 'images/sakura.png' %}">
+    <div class="container " >
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary rounded-custom shadow" style="background-color: #ffe7e7 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">邮件平台-樱花季</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'receive_email' %}">接收邮件</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'compose_email' %}">撰写邮件</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contacts' %}">联系人</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'flagged_emails'%}">星标邮件</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'trash_email'%}">回收站</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'personal_info'%}">个人信息</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- 主要内容区域 -->
+        <div class=
+        "shadow-lg p-3 mb-5 bg-body-tertiary /* 阴影 */
+        rounded-custom /*圆角 */" 
+        style="
+        border-color: hsl(0, 100%, 96%, 0.2); /* 边框颜色 */
+        border-style: solid;   /* 边框样式 */
+        border-width: 3px;     /* 边框宽度 */
+        background-color: rgba(255,255,255,0.5)!important; /* 背景颜色和透明度 */
+     ">
+            <div class="card-body">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 本地Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+    <script type="text/javascript" src="{%static 'js/sakura.js'%}"></script>
+</body>
+
+
+
+</html>
